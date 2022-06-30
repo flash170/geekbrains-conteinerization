@@ -4,20 +4,17 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-        "strconv"
+    
 
 	"github.com/gorilla/mux"
 )
 
-func sumHandler(w http.ResponseWriter, r *http.Request) {
-        queryValues := r.URL.Query()
-        a, _ := strconv.Atoi(queryValues.Get("a"))
-        b, _ := strconv.Atoi(queryValues.Get("b"))
-	fmt.Fprintf(w, "%v", a+b)
+func HelloWord(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello, Word!")
 }
 
 func main() {
 	router := mux.NewRouter().StrictSlash(true)
-	router.HandleFunc("/api/v1/sum", sumHandler)
+	router.HandleFunc("/", HelloWord)
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
