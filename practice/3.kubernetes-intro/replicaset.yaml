@@ -1,20 +1,29 @@
 ---
 apiVersion: apps/v1
-kind: ReplicaSet
+kind: Deployment
 metadata:
-  name: my-replicaset
+  labels:
+    app: kubedoom
+  name: kubedoom
+  namespace: kubedoom
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: my-app
+      app: kubedoom
   template:
     metadata:
       labels:
-        app: my-app
+        app: kubedoom
     spec:
+      hostNetwork: true
+      serviceAccountName: kubedoom
       containers:
-      - image: nginx:1.12
-        name: nginx
-        ports:
-        - containerPort: 80
+        - image: ghcr.io/storax/kubedoom:0.5.0
+          env:
+            - name: NAMESPACE
+              value: default
+          name: kubedoom
+          ports:
+            - containerPort: 5900
+              name: vnc
