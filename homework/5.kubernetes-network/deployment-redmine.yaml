@@ -1,14 +1,40 @@
+---
 apiVersion: apps/v1
-
-services:
-
-  redmine:
-    image: sameersbn/redmine:4.1.1
-    depends_on:
-      - postgresql
-    environment:
-      RREDMINE_DB_POSTGRES: testdatabase
-      REDMINE_DB_USERNAME: testuser
-      REDMINE_DB_PASSWORD_FILE: /config/secrets.yaml
-      REDMINE_SECRET_KEY_BASE_FILE: /config/secrets.yaml
-      REDMINE_PORT: 3000
+kind       : Deployment
+metadata:
+  name     : redmine-db
+  namespace: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app   : redmine-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app : redmine-db
+    spec:
+      containers:
+      - image: redmine:4.1.1
+        name : redmine
+        ports:
+        - containerPort: 3000
+        env:
+          - name : REDMINE_DB_USERNAME
+            value: "testuser"
+          - name : REDMINE_DB_DATABASE
+            value: "testdatabase"
+          - name : REDMINE_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgrsecret
+                key : 1
+          - name  : REDMINE_SECRET_KEY_BASE
+            valueFrom:
+              secretKeyRef:
+                name: redminesecret
+                key : 1
+          - name : REDMINE_DB_POSTGRES
+            value: "database-service"
