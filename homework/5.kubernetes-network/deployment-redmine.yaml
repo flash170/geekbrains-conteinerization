@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+
+services:
+
+  redmine:
+    image: sameersbn/redmine:4.1.1
+    depends_on:
+      - postgresql
+    environment:
+      RREDMINE_DB_POSTGRES: testdatabase
+      REDMINE_DB_USERNAME: testuser
+      REDMINE_DB_PASSWORD_FILE: /config/secrets.yaml
+      REDMINE_SECRET_KEY_BASE_FILE: /config/secrets.yaml
+      REDMINE_PORT: 3000
