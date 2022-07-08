@@ -8,7 +8,7 @@ spec:
   - port: 80
     targetPort: 3000
   selector:
-    app: redmine-db
+    app: redminedb
   type: ClusterIP
 
 ---

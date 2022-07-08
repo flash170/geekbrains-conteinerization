@@ -2,19 +2,19 @@
 apiVersion: apps/v1
 kind       : Deployment
 metadata:
-  name     : redmine-db
+  name     : redminedb
   namespace: postgres
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app   : redmine-db
+      app   : redminedb
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app : redmine-db
+        app : redminedb
     spec:
       containers:
       - image: redmine:4.1.1
