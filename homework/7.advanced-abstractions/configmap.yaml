@@ -20,3 +20,4 @@ data:
           regex: (.+):(.+)
           target_label: __address__
           replacement: ${1}:9101
+          
